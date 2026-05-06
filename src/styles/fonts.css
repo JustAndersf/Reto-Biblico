@@ -1,0 +1,52 @@
+/* Preconnect para reducir latencia de Google Fonts */
+/* En index.html también se deben agregar los <link rel="preconnect"> para el navegador */
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@400;600;700;800;900&display=swap");
+
+/* ============================================================
+   Tokens semánticos del juego — Reto Bíblico
+   ============================================================ */
+:root {
+  /* Paleta principal */
+  --game-blue:        #4A7FD4;
+  --game-blue-dark:   #3A6FBF;
+  --game-blue-light:  #7BB8F0;
+  --game-sky:         #5B9FE8;
+  --game-bg:          #EEF4FB;
+  --game-bg-soft:     #F5F8FD;
+
+  /* Accentos */
+  --game-green:       #5BB89A;
+  --game-green-dark:  #3A9878;
+  --game-gold:        #F0B429;
+  --game-gold-bright: #FFD700;
+  --game-red:         #E85474;
+  --game-red-dark:    #C43050;
+  --game-orange:      #E87D5A;
+  --game-purple:      #9B7FBB;
+  --game-beige:       #F5EFE6;
+  --game-beige-border: rgba(212, 146, 91, 0.2);
+
+  /* Textos */
+  --game-text-dark:   #1E3A5F;
+  --game-text-mid:    #4A6A8A;
+  --game-text-soft:   #8EABC9;
+  --game-text-muted:  #A0B5CC;
+
+  /* Superficies */
+  --game-card:        #FFFFFF;
+  --game-card-shadow: rgba(74, 127, 212, 0.08);
+  --game-card-border: rgba(74, 127, 212, 0.08);
+  --game-overlay:     rgba(10, 20, 40, 0.55);
+
+  /* Radios */
+  --game-radius-sm:   10px;
+  --game-radius-md:   14px;
+  --game-radius-lg:   18px;
+  --game-radius-xl:   22px;
+  --game-radius-2xl:  28px;
+  --game-radius-full: 9999px;
+
+  /* Tipografías */
+  --game-font-serif:  "Lora", Georgia, serif;
+  --game-font-sans:   "Nunito", system-ui, sans-serif;
+}
