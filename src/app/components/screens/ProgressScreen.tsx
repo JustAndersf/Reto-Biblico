@@ -1,18 +1,42 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "motion/react";
 import { ArrowLeft, Star, Trophy, Target, Zap } from "lucide-react";
 import { useGame } from "../../context/GameContext";
 import { CATEGORIES } from "../../data/gameData";
+import type { Category } from "../../types/game";
+import { getCategories } from "../../services/categoriesService";
+import { hasSupabaseEnv } from "../../../lib/supabaseClient";
 
 export function ProgressScreen() {
   const navigate = useNavigate();
   const { state } = useGame();
+  const [categories, setCategories] = useState<Category[]>(hasSupabaseEnv ? [] : CATEGORIES);
+  const [isLoading, setIsLoading] = useState(hasSupabaseEnv);
 
-  const totalLevels = CATEGORIES.reduce((acc, c) => acc + c.levels.length, 0);
+  useEffect(() => {
+    let isMounted = true;
+
+    getCategories()
+      .then((remoteCategories) => {
+        if (!isMounted) return;
+        setCategories(remoteCategories);
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const totalLevels = categories.reduce((acc, c) => acc + c.levels.length, 0);
   const completedLevels = Object.values(state.levelProgress).reduce((acc, cat) => {
     return acc + Object.values(cat).filter((l) => l.completed).length;
   }, 0);
-  const overallProgress = Math.round((completedLevels / totalLevels) * 100);
+  const overallProgress = totalLevels > 0 ? Math.round((completedLevels / totalLevels) * 100) : 0;
 
   return (
     <div className="flex flex-col min-h-full" style={{ background: "#EEF4FB" }}>
@@ -106,6 +130,16 @@ export function ProgressScreen() {
 
       {/* Categories Progress */}
       <div className="flex-1 px-5 py-5">
+        {isLoading && (
+          <div className="flex items-center justify-center py-10">
+            <p style={{ fontFamily: "Nunito, sans-serif", fontSize: "14px", color: "#8EABC9" }}>
+              Cargando progreso...
+            </p>
+          </div>
+        )}
+
+        {!isLoading && (
+          <>
         <p
           style={{
             fontFamily: "Nunito, sans-serif",
@@ -120,7 +154,7 @@ export function ProgressScreen() {
         </p>
 
         <div className="flex flex-col gap-4">
-          {CATEGORIES.map((category, catI) => {
+          {categories.map((category, catI) => {
             const catProgress = state.levelProgress[category.id] || {};
             const completedCat = Object.values(catProgress).filter((l) => l.completed).length;
             const totalCat = category.levels.length;
@@ -260,6 +294,8 @@ export function ProgressScreen() {
               ¡Aún no has completado ningún nivel!{"\n"}¡Comienza tu aventura bíblica!
             </p>
           </motion.div>
+        )}
+          </>
         )}
 
         <div className="h-4" />

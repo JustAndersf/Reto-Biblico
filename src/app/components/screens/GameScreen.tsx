@@ -2,9 +2,12 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
-import { getCategoryById, getLevelById } from "../../data/gameData";
+import { getCategoryById, getLevelById as getLocalLevelById } from "../../data/gameData";
 import { useGame } from "../../context/GameContext";
+import type { Level } from "../../types/game";
 import { LifeHearts } from "../LifeHearts";
+import { getLevelById } from "../../services/levelsService";
+import { saveCurrentUserLevelProgress } from "../../services/progressService";
 
 export function GameScreen() {
   const navigate = useNavigate();
@@ -15,14 +18,31 @@ export function GameScreen() {
   const [answered, setAnswered] = useState(false);
 
   const category = categoryId ? getCategoryById(categoryId) : null;
-  const level = categoryId && levelId ? getLevelById(categoryId, parseInt(levelId)) : null;
+  const [level, setLevel] = useState<Level | null>(
+    categoryId && levelId ? getLocalLevelById(categoryId, parseInt(levelId, 10)) ?? null : null,
+  );
+
+  useEffect(() => {
+    if (!categoryId || !levelId) return;
+
+    let isMounted = true;
+
+    getLevelById(categoryId, parseInt(levelId, 10)).then((remoteLevel) => {
+      if (!isMounted || !remoteLevel) return;
+      setLevel(remoteLevel);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [categoryId, levelId]);
 
   // Init game if no current game
   useEffect(() => {
     if (!state.currentGame && category && level) {
       startGame(category.id, level.id);
     }
-  }, []);
+  }, [category, level, startGame, state.currentGame]);
 
   if (!category || !level) {
     return (
@@ -78,6 +98,16 @@ export function GameScreen() {
                 : 1;
 
             completeLevel({
+              categoryId: category.id,
+              levelId: level.id,
+              completed: true,
+              stars,
+              points: finalScore,
+              correctAnswers,
+              totalQuestions: totalQ,
+            });
+
+            void saveCurrentUserLevelProgress({
               categoryId: category.id,
               levelId: level.id,
               completed: true,

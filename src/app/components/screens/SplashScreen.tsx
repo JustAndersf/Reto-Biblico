@@ -1,16 +1,21 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "motion/react";
+import { useAuth } from "../../hooks/useAuth";
 
 export function SplashScreen() {
   const navigate = useNavigate();
+  const { isAuthenticated, loading } = useAuth();
 
-  const handleStart = () => navigate("/home");
+  const targetRoute = isAuthenticated ? "/home" : "/login";
+  const handleStart = () => navigate(targetRoute);
 
   useEffect(() => {
-    const timer = setTimeout(() => navigate("/home"), 4000);
+    if (loading) return;
+
+    const timer = setTimeout(() => navigate(targetRoute), 4000);
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [loading, navigate, targetRoute]);
 
   return (
     <div

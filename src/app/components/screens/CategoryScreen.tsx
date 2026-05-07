@@ -1,12 +1,36 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "motion/react";
-import { ArrowLeft, ChevronRight, Lock } from "lucide-react";
-import { CATEGORIES } from "../../data/gameData";
+import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useGame } from "../../context/GameContext";
+import { CATEGORIES } from "../../data/gameData";
+import type { Category } from "../../types/game";
+import { getCategories } from "../../services/categoriesService";
+import { hasSupabaseEnv } from "../../../lib/supabaseClient";
 
 export function CategoryScreen() {
   const navigate = useNavigate();
   const { state, isLevelUnlocked } = useGame();
+  const [categories, setCategories] = useState<Category[]>(hasSupabaseEnv ? [] : CATEGORIES);
+  const [isLoading, setIsLoading] = useState(hasSupabaseEnv);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    getCategories()
+      .then((remoteCategories) => {
+        if (!isMounted) return;
+        setCategories(remoteCategories);
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const getCategoryProgress = (categoryId: string) => {
     const progress = state.levelProgress[categoryId] || {};
@@ -59,7 +83,16 @@ export function CategoryScreen() {
 
       {/* Category List */}
       <div className="flex-1 px-5 pb-6 flex flex-col gap-4">
-        {CATEGORIES.map((category, i) => {
+        {isLoading && (
+          <div className="flex flex-1 items-center justify-center px-4">
+            <p style={{ fontFamily: "Nunito, sans-serif", fontSize: "14px", color: "#8EABC9" }}>
+              Cargando categorias...
+            </p>
+          </div>
+        )}
+
+        {!isLoading &&
+          categories.map((category, i) => {
           const completed = getCategoryProgress(category.id);
           const totalLevels = category.levels.length;
           const firstUnlocked = isLevelUnlocked(category.id, 1);
@@ -157,7 +190,7 @@ export function CategoryScreen() {
               <ChevronRight size={18} color="#8EABC9" />
             </motion.button>
           );
-        })}
+          })}
 
         <div className="h-2" />
       </div>

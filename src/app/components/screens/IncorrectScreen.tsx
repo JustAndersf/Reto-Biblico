@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router";
 import { motion } from "motion/react";
 import { useGame } from "../../context/GameContext";
 import { LifeHearts } from "../LifeHearts";
+import { saveCurrentUserLevelProgress } from "../../services/progressService";
 
 interface IncorrectState {
   correctIndex: number;
@@ -35,6 +36,16 @@ export function IncorrectScreen() {
           : 1;
 
       completeLevel({
+        categoryId: data.categoryId,
+        levelId: data.levelId,
+        completed: true,
+        stars,
+        points: data.currentScore,
+        correctAnswers: data.correctAnswers,
+        totalQuestions: data.totalQ,
+      });
+
+      void saveCurrentUserLevelProgress({
         categoryId: data.categoryId,
         levelId: data.levelId,
         completed: true,

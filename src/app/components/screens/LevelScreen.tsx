@@ -1,15 +1,49 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { motion } from "motion/react";
 import { ArrowLeft, Lock, Star, CheckCircle2, Play } from "lucide-react";
-import { getCategoryById } from "../../data/gameData";
 import { useGame } from "../../context/GameContext";
+import { getCategoryById as getLocalCategoryById } from "../../data/gameData";
+import type { Category } from "../../types/game";
+import { getCategoryById } from "../../services/categoriesService";
+import { hasSupabaseEnv } from "../../../lib/supabaseClient";
 
 export function LevelScreen() {
   const navigate = useNavigate();
   const { categoryId } = useParams<{ categoryId: string }>();
   const { isLevelUnlocked, isLevelCompleted, getLevelResult, startGame } = useGame();
+  const [category, setCategory] = useState<Category | null>(
+    hasSupabaseEnv ? null : categoryId ? getLocalCategoryById(categoryId) ?? null : null,
+  );
+  const [isLoading, setIsLoading] = useState(hasSupabaseEnv);
 
-  const category = categoryId ? getCategoryById(categoryId) : null;
+  useEffect(() => {
+    if (!categoryId) return;
+
+    let isMounted = true;
+
+    getCategoryById(categoryId)
+      .then((remoteCategory) => {
+        if (!isMounted) return;
+        setCategory(remoteCategory ?? null);
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [categoryId]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p style={{ fontFamily: "Nunito, sans-serif", color: "#8EABC9" }}>Cargando niveles...</p>
+      </div>
+    );
+  }
 
   if (!category) {
     return (
