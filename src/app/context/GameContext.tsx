@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useReducer, useEffect, useRef } from "react";
 import { GameState, CurrentGame, GameSettings, LevelResult } from "../types/game";
 import { MAX_LIVES } from "../data/gameData";
+import { getUserLevelProgress } from "../services/progressService";
+import { supabase } from "../../lib/supabaseClient";
 
 const STORAGE_KEY = "reto_biblico_state";
 
@@ -213,7 +215,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Cargar estado persistido
+  // Cargar estado persistido desde localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -224,6 +226,50 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore
     }
+  }, []);
+
+  // Sincronizar progreso desde Supabase cuando el usuario está autenticado
+  useEffect(() => {
+    if (!supabase) return;
+
+    let isMounted = true;
+
+    const syncProgressFromSupabase = async () => {
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error || !data.user || !isMounted) {
+        return;
+      }
+
+      try {
+        const remoteProgress = await getUserLevelProgress(data.user.id);
+        if (!isMounted) return;
+
+        // Solo cargar el progreso si hay datos remotos
+        if (Object.keys(remoteProgress).length > 0) {
+          dispatch({ type: "LOAD_STATE", payload: { ...initialState, levelProgress: remoteProgress } });
+        }
+      } catch {
+        // Silently fail - keep using local progress
+      }
+    };
+
+    // Sincronizar al montar
+    syncProgressFromSupabase();
+
+    // Escuchar cambios de autenticación para re-sincronizar
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, _session) => {
+      if (isMounted) {
+        await syncProgressFromSupabase();
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Guardar estado en localStorage
