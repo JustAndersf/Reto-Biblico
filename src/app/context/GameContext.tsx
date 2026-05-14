@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect, useRef } from "react";
 import { GameState, CurrentGame, GameSettings, LevelResult } from "../types/game";
 import { MAX_LIVES } from "../data/gameData";
-import { getUserLevelProgress } from "../services/progressService";
+import { getUserLevelProgress, getPlayerState, saveCurrentPlayerState } from "../services/progressService";
 import { supabase } from "../../lib/supabaseClient";
 
 const STORAGE_KEY = "reto_biblico_state";
@@ -19,6 +19,12 @@ const initialState: GameState = {
   totalPoints: 0,
   levelProgress: {},
   settings: { music: true, sound: true },
+  dailyChallenges: {
+    levelsCompletedToday: 0,
+    rachaBonusClaimed: false,
+    desafioBonusClaimed: false,
+    lastActivityDate: null,
+  },
   currentGame: null,
 };
 
@@ -35,6 +41,7 @@ type Action =
   | { type: "ADD_POINTS"; payload: number }
   | { type: "SPEND_POINTS"; payload: number }
   | { type: "UPDATE_SETTINGS"; payload: Partial<GameSettings> }
+  | { type: "UPDATE_DAILY_CHALLENGES"; payload: Partial<{ rachaBonusClaimed: boolean; desafioBonusClaimed: boolean }> }
   | { type: "LOAD_STATE"; payload: GameState };
 
 function addRegenTimestamp(state: GameState): number[] {
@@ -185,6 +192,15 @@ function reducer(state: GameState, action: Action): GameState {
     case "UPDATE_SETTINGS":
       return { ...state, settings: { ...state.settings, ...action.payload } };
 
+    case "UPDATE_DAILY_CHALLENGES":
+      return {
+        ...state,
+        dailyChallenges: {
+          ...state.dailyChallenges,
+          ...action.payload,
+        },
+      };
+
     default:
       return state;
   }
@@ -203,6 +219,7 @@ interface GameContextValue {
   buyLivesWithCoins: (amount: number, cost: number) => void;
   buyCoinsWithPoints: (amount: number, costPoints: number) => void;
   updateSettings: (settings: Partial<GameSettings>) => void;
+  updateDailyChallenges: (updates: Partial<{ rachaBonusClaimed: boolean; desafioBonusClaimed: boolean }>) => void;
   isLevelUnlocked: (categoryId: string, levelId: number) => boolean;
   isLevelCompleted: (categoryId: string, levelId: number) => boolean;
   getLevelResult: (categoryId: string, levelId: number) => LevelResult | undefined;
@@ -228,13 +245,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Sincronizar progreso desde Supabase cuando el usuario está autenticado
+  // Sincronizar progreso y estado del jugador desde Supabase
   useEffect(() => {
     if (!supabase) return;
 
     let isMounted = true;
 
-    const syncProgressFromSupabase = async () => {
+    const syncFromSupabase = async () => {
       const { data, error } = await supabase.auth.getUser();
 
       if (error || !data.user || !isMounted) {
@@ -242,27 +259,41 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
+        // Cargar progreso de niveles
         const remoteProgress = await getUserLevelProgress(data.user.id);
         if (!isMounted) return;
 
-        // Solo cargar el progreso si hay datos remotos
-        if (Object.keys(remoteProgress).length > 0) {
-          dispatch({ type: "LOAD_STATE", payload: { ...initialState, levelProgress: remoteProgress } });
+        // Cargar estado del jugador (vidas, monedas, etc)
+        const playerState = await getPlayerState(data.user.id);
+        if (!isMounted) return;
+
+        // Combinar datos de Supabase con estado local
+        const newState = { ...initialState, levelProgress: remoteProgress };
+
+        if (playerState) {
+          newState.globalLives = playerState.globalLives;
+          newState.coins = playerState.coins;
+          newState.totalPoints = playerState.totalPoints;
+          newState.regenTimestamps = playerState.regenTimestamps;
+          newState.settings = playerState.settings;
+          newState.dailyChallenges = playerState.dailyChallenges;
         }
+
+        dispatch({ type: "LOAD_STATE", payload: newState });
       } catch {
-        // Silently fail - keep using local progress
+        // Silently fail - keep using local state
       }
     };
 
     // Sincronizar al montar
-    syncProgressFromSupabase();
+    syncFromSupabase();
 
     // Escuchar cambios de autenticación para re-sincronizar
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, _session) => {
       if (isMounted) {
-        await syncProgressFromSupabase();
+        await syncFromSupabase();
       }
     });
 
@@ -280,6 +311,34 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       // ignore
     }
   }, [state]);
+
+  // Guardar estado del jugador en Supabase (vidas, monedas, puntos, etc)
+  useEffect(() => {
+    if (!supabase) return;
+
+    let isMounted = true;
+
+    const saveState = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (!data.user || !isMounted) return;
+
+      await saveCurrentPlayerState({
+        globalLives: state.globalLives,
+        coins: state.coins,
+        totalPoints: state.totalPoints,
+        regenTimestamps: state.regenTimestamps,
+        settings: state.settings,
+      });
+    };
+
+    // Guardar con un pequeño delay para evitar demasiadas escrituras
+    const timeoutId = setTimeout(saveState, 1000);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
+  }, [state.globalLives, state.coins, state.totalPoints, state.regenTimestamps, state.settings]);
 
   // Temporizador de regeneración de vidas globales
   useEffect(() => {
@@ -339,6 +398,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const updateSettings = (settings: Partial<GameSettings>) =>
     dispatch({ type: "UPDATE_SETTINGS", payload: settings });
 
+  const updateDailyChallenges = (updates: Partial<{ rachaBonusClaimed: boolean; desafioBonusClaimed: boolean }>) =>
+    dispatch({ type: "UPDATE_DAILY_CHALLENGES", payload: updates });
+
   const isLevelUnlocked = (categoryId: string, levelId: number): boolean => {
     if (levelId === 1) return true;
     return !!state.levelProgress[categoryId]?.[levelId - 1]?.completed;
@@ -365,6 +427,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         buyLivesWithCoins,
         buyCoinsWithPoints,
         updateSettings,
+        updateDailyChallenges,
         isLevelUnlocked,
         isLevelCompleted,
         getLevelResult,

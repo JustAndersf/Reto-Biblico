@@ -280,29 +280,31 @@ export function HomeScreen() {
           </motion.button>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mt-5 flex items-center justify-between p-4"
-          style={{ background: "rgba(255,255,255,0.16)", borderRadius: "18px", border: "1px solid rgba(255,255,255,0.2)" }}
-        >
-          <div className="flex items-center gap-3">
-            <div
-              className="flex items-center justify-center"
-              style={{ width: "42px", height: "42px", borderRadius: "14px", background: "rgba(255,255,255,0.2)" }}
-            >
-              <Sparkles size={18} color="#FFFFFF" />
+        {!state.dailyChallenges.rachaBonusClaimed && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mt-5 flex items-center justify-between p-4"
+            style={{ background: "rgba(255,255,255,0.16)", borderRadius: "18px", border: "1px solid rgba(255,255,255,0.2)" }}
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className="flex items-center justify-center"
+                style={{ width: "42px", height: "42px", borderRadius: "14px", background: "rgba(255,255,255,0.2)" }}
+              >
+                <Sparkles size={18} color="#FFFFFF" />
+              </div>
+              <div>
+                <p style={{ fontFamily: "var(--game-font-sans)", fontWeight: 800, fontSize: "14px", color: "#FFFFFF" }}>Racha del día</p>
+                <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "12px", color: "rgba(255,255,255,0.7)" }}>
+                  Completa 1 nivel para bonus
+                </p>
+              </div>
             </div>
-            <div>
-              <p style={{ fontFamily: "var(--game-font-sans)", fontWeight: 800, fontSize: "14px", color: "#FFFFFF" }}>Racha del día</p>
-              <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "12px", color: "rgba(255,255,255,0.7)" }}>
-                Completa 1 nivel para bonus
-              </p>
-            </div>
-          </div>
-          <div style={{ fontFamily: "var(--game-font-sans)", fontWeight: 800, fontSize: "18px", color: "#FFD700" }}>+25</div>
-        </motion.div>
+            <div style={{ fontFamily: "var(--game-font-sans)", fontWeight: 800, fontSize: "18px", color: "#FFD700" }}>+25</div>
+          </motion.div>
+        )}
 
         <div className="mt-5 grid grid-cols-3 gap-3">
           <motion.button
@@ -583,31 +585,33 @@ export function HomeScreen() {
             </span>
           </motion.button>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center justify-between p-4"
-            style={{ background: "#FFFFFF", borderRadius: "18px", border: "1px solid #E2EAF4", boxShadow: "0 10px 24px rgba(30,58,95,0.08)" }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center" style={{ width: "44px", height: "44px", borderRadius: "14px", background: "#FDF0E6" }}>
-                <Crown size={18} color="#D4925B" />
-              </div>
-              <div>
-                <p style={{ fontFamily: "var(--game-font-sans)", fontWeight: 800, fontSize: "14px", color: "#1E3A5F" }}>Desafío diario</p>
-                <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "12px", color: "#7A8EA6" }}>Gana 50 puntos completando 2 niveles</p>
-              </div>
-            </div>
-            <motion.button
-              whileTap={{ scale: 0.96 }}
-              onClick={() => navigate("/categories")}
-              className="px-4 py-2"
-              style={{ background: "#1E3A5F", borderRadius: "12px", border: "none", cursor: "pointer" }}
+          {!state.dailyChallenges.desafioBonusClaimed && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center justify-between p-4"
+              style={{ background: "#FFFFFF", borderRadius: "18px", border: "1px solid #E2EAF4", boxShadow: "0 10px 24px rgba(30,58,95,0.08)" }}
             >
-              <span style={{ fontFamily: "var(--game-font-sans)", fontWeight: 700, fontSize: "12px", color: "#FFFFFF" }}>Participar</span>
-            </motion.button>
-          </motion.div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center" style={{ width: "44px", height: "44px", borderRadius: "14px", background: "#FDF0E6" }}>
+                  <Crown size={18} color="#D4925B" />
+                </div>
+                <div>
+                  <p style={{ fontFamily: "var(--game-font-sans)", fontWeight: 800, fontSize: "14px", color: "#1E3A5F" }}>Desafío diario</p>
+                  <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "12px", color: "#7A8EA6" }}>Gana 50 puntos completando 2 niveles</p>
+                </div>
+              </div>
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                onClick={() => navigate("/categories")}
+                className="px-4 py-2"
+                style={{ background: "#1E3A5F", borderRadius: "12px", border: "none", cursor: "pointer" }}
+              >
+                <span style={{ fontFamily: "var(--game-font-sans)", fontWeight: 700, fontSize: "12px", color: "#FFFFFF" }}>Participar</span>
+              </motion.button>
+            </motion.div>
+          )}
         </div>
 
         <div>

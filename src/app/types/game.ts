@@ -52,6 +52,13 @@ export interface GameSettings {
   sound: boolean;
 }
 
+export interface DailyChallenges {
+  levelsCompletedToday: number;
+  rachaBonusClaimed: boolean;
+  desafioBonusClaimed: boolean;
+  lastActivityDate: string | null;
+}
+
 export interface GameState {
   globalLives: number;       // vidas globales del jugador (max 3)
   coins: number;             // monedas del jugador
@@ -59,5 +66,6 @@ export interface GameState {
   totalPoints: number;
   levelProgress: LevelProgress;
   settings: GameSettings;
+  dailyChallenges: DailyChallenges;
   currentGame: CurrentGame | null;
 }

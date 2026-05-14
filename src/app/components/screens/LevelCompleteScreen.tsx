@@ -1,9 +1,12 @@
 import { useNavigate, useLocation } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Star, Trophy, CheckCircle2, Home, RotateCcw, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
 import { useGame } from "../../context/GameContext";
 import { getCategoryById } from "../../data/gameData";
+import { completeDailyLevel } from "../../services/progressService";
+import { supabase } from "../../../lib/supabaseClient";
 import confetti from "canvas-confetti";
 
 interface LevelCompleteState {
@@ -21,11 +24,42 @@ interface LevelCompleteState {
 export function LevelCompleteScreen() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { state, startGame } = useGame();
+  const { state, startGame, addPoints, updateDailyChallenges } = useGame();
+  const [dailyRewardProcessed, setDailyRewardProcessed] = useState(false);
 
   const data = location.state as LevelCompleteState;
   const category = data?.categoryId ? getCategoryById(data.categoryId) : null;
   const totalLevelsInCategory = category?.levels.length ?? 5;
+
+  useEffect(() => {
+    const processDailyChallenge = async () => {
+      if (dailyRewardProcessed || !supabase) return;
+
+      try {
+        const { data } = await supabase.auth.getUser();
+        if (!data.user) return;
+
+        const reward = await completeDailyLevel(data.user.id);
+        if (reward.points > 0) {
+          addPoints(reward.points);
+          toast.success(reward.message, {
+            duration: 4000,
+          });
+
+          if (reward.type === 'racha') {
+            updateDailyChallenges({ rachaBonusClaimed: true });
+          } else if (reward.type === 'desafio') {
+            updateDailyChallenges({ desafioBonusClaimed: true });
+          }
+        }
+        setDailyRewardProcessed(true);
+      } catch {
+        // Silently fail if daily challenge processing fails
+      }
+    };
+
+    processDailyChallenge();
+  }, [dailyRewardProcessed, addPoints, updateDailyChallenges]);
 
   useEffect(() => {
     const t1 = setTimeout(() => {
@@ -90,7 +124,6 @@ export function LevelCompleteScreen() {
       className="flex flex-col min-h-full"
       style={{ background: "#EEF4FB" }}
     >
-      {/* Header */}
       <div
         className="px-5 pt-4 pb-8 flex flex-col items-center"
         style={{
@@ -103,7 +136,6 @@ export function LevelCompleteScreen() {
           {data?.categoryEmoji} {data?.categoryName}
         </p>
 
-        {/* Trophy */}
         <motion.div
           initial={{ scale: 0, y: -20 }}
           animate={{ scale: 1, y: 0 }}
@@ -150,7 +182,6 @@ export function LevelCompleteScreen() {
           {getStarMessage()}
         </motion.p>
 
-        {/* Stars row */}
         <motion.div
           initial={{ opacity: 0, scale: 0.7 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -175,9 +206,7 @@ export function LevelCompleteScreen() {
         </motion.div>
       </div>
 
-      {/* Stats */}
       <div className="px-5 py-5 flex flex-col gap-4">
-        {/* Stats grid */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -226,7 +255,6 @@ export function LevelCompleteScreen() {
           ))}
         </motion.div>
 
-        {/* Saved progress note */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -251,14 +279,12 @@ export function LevelCompleteScreen() {
           </p>
         </motion.div>
 
-        {/* Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65 }}
           className="flex flex-col gap-3"
         >
-          {/* Next Level */}
           {data?.levelId < totalLevelsInCategory && (
             <motion.button
               whileTap={{ scale: 0.97 }}
@@ -280,7 +306,6 @@ export function LevelCompleteScreen() {
           )}
 
           <div className="grid grid-cols-2 gap-3">
-            {/* Retry */}
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={handleRetry}
@@ -299,7 +324,6 @@ export function LevelCompleteScreen() {
               </span>
             </motion.button>
 
-            {/* Home */}
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate("/home")}
