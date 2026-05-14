@@ -36,7 +36,7 @@ La app usa la ruta `/auth/callback` para terminar el login con Google.
 1. Crea un proyecto en Supabase.
 2. Habilita Google en `Authentication > Providers`.
 3. Agrega estas URLs a los redirect URLs permitidos en Supabase Auth:
-   - `http://localhost:5173/auth/callback`
+   - `http://localhost:3000/auth/callback`
    - `https://tu-dominio.vercel.app/auth/callback`
 4. Usa únicamente la `anon key` en el frontend.
 
