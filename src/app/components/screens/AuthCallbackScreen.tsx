@@ -11,7 +11,7 @@ export function AuthCallbackScreen() {
   useEffect(() => {
     const handleCallback = async () => {
       if (!supabase) {
-        toast.error("Supabase no está configurado.");
+        toast.error("No se pudo conectar con el servidor.");
         navigate("/login", { replace: true });
         return;
       }

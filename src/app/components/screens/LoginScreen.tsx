@@ -94,7 +94,7 @@ export function LoginScreen() {
             }}
           >
             Inicia sesión con Google para guardar tu progreso, proteger tus partidas
-            y sincronizar niveles completados en Supabase.
+            y sincronizar niveles completados en todos tus dispositivos.
           </p>
 
           <div
@@ -113,8 +113,7 @@ export function LoginScreen() {
                 color: "#4F647C",
               }}
             >
-              Solo se usa la clave pública de Supabase en el frontend. El estado temporal
-              de la partida sigue local, y el progreso final se prepara para guardarse en la nube.
+              Tu información está protegida. Tu progreso se guarda de forma segura en tu dispositivo y se sincroniza con nuestros servidores.
             </p>
           </div>
 
