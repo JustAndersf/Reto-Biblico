@@ -41,15 +41,15 @@ export function CategoryScreen() {
   return (
     <div className="flex flex-col min-h-full" style={{ background: "#EEF4FB" }}>
       {/* Header */}
-      <div className="flex items-center gap-4 px-5 pt-4 pb-5">
+      <div className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 pt-4 pb-5">
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => navigate("/home")}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center flex-shrink-0"
           style={{
-            width: "40px",
-            height: "40px",
-            borderRadius: "13px",
+            width: "clamp(36px, 8vw, 44px)",
+            height: "clamp(36px, 8vw, 44px)",
+            borderRadius: "clamp(10px, 2vw, 16px)",
             background: "#FFFFFF",
             boxShadow: "0 2px 8px rgba(74,127,212,0.12)",
             border: "none",
@@ -58,13 +58,14 @@ export function CategoryScreen() {
         >
           <ArrowLeft size={18} color="#4A7FD4" strokeWidth={2.5} />
         </motion.button>
-        <div>
+        <div className="flex-1 min-w-0">
           <h1
             style={{
               fontFamily: "Lora, serif",
               fontWeight: 700,
-              fontSize: "22px",
+              fontSize: "clamp(18px, 5vw, 28px)",
               color: "#1E3A5F",
+              lineHeight: 1.1,
             }}
           >
             Categorías
@@ -72,7 +73,7 @@ export function CategoryScreen() {
           <p
             style={{
               fontFamily: "Nunito, sans-serif",
-              fontSize: "13px",
+              fontSize: "clamp(11px, 2.5vw, 14px)",
               color: "#8EABC9",
             }}
           >
@@ -82,7 +83,7 @@ export function CategoryScreen() {
       </div>
 
       {/* Category List */}
-      <div className="flex-1 px-5 pb-6 flex flex-col gap-4">
+      <div className="flex-1 px-4 sm:px-6 pb-6 flex flex-col gap-3 sm:gap-4">
         {isLoading && (
           <div className="flex flex-1 items-center justify-center px-4">
             <p style={{ fontFamily: "Nunito, sans-serif", fontSize: "14px", color: "#8EABC9" }}>

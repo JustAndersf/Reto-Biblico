@@ -57,7 +57,7 @@ export function SplashScreen() {
       </div>
 
       {/* Center: Logo + Title */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-6 mt-8">
+      <div className="flex-1 flex flex-col items-center justify-center gap-4 sm:gap-6 mt-8">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.8 }}
@@ -67,16 +67,16 @@ export function SplashScreen() {
         >
           {/* Logo Circle */}
           <div
-            className="flex items-center justify-center mb-4"
+            className="flex items-center justify-center mb-3 sm:mb-4"
             style={{
-              width: "120px",
-              height: "120px",
-              borderRadius: "36px",
+              width: "clamp(80px, 15vw, 140px)",
+              height: "clamp(80px, 15vw, 140px)",
+              borderRadius: "clamp(24px, 4vw, 36px)",
               background: "rgba(255,255,255,0.95)",
               boxShadow: "0 12px 40px rgba(74,127,212,0.4), 0 4px 12px rgba(0,0,0,0.1)",
             }}
           >
-            <span style={{ fontSize: "58px" }}>📖</span>
+            <span style={{ fontSize: "clamp(40px, 10vw, 64px)" }}>📖</span>
           </div>
 
           {/* Title */}
@@ -87,7 +87,7 @@ export function SplashScreen() {
             style={{
               fontFamily: "Lora, serif",
               fontWeight: 700,
-              fontSize: "34px",
+              fontSize: "clamp(24px, 6vw, 40px)",
               color: "#FFFFFF",
               textAlign: "center",
               letterSpacing: "-0.5px",
@@ -103,10 +103,10 @@ export function SplashScreen() {
             transition={{ duration: 0.6, delay: 0.5 }}
             style={{
               fontFamily: "Nunito, sans-serif",
-              fontSize: "16px",
+              fontSize: "clamp(12px, 3vw, 18px)",
               color: "rgba(255,255,255,0.85)",
               textAlign: "center",
-              marginTop: "8px",
+              marginTop: "clamp(4px, 1vw, 8px)",
               letterSpacing: "1.5px",
             }}
           >
@@ -119,7 +119,7 @@ export function SplashScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="px-4 py-4 mx-4 text-center"
+          className="px-4 sm:px-6 py-4 mx-4 sm:mx-6 text-center max-w-lg"
           style={{
             background: "rgba(255,255,255,0.15)",
             borderRadius: "20px",
@@ -130,7 +130,7 @@ export function SplashScreen() {
             style={{
               fontFamily: "Lora, serif",
               fontStyle: "italic",
-              fontSize: "14px",
+              fontSize: "clamp(12px, 2.5vw, 16px)",
               color: "rgba(255,255,255,0.92)",
               lineHeight: 1.6,
             }}
@@ -140,7 +140,7 @@ export function SplashScreen() {
           <p
             style={{
               fontFamily: "Nunito, sans-serif",
-              fontSize: "12px",
+              fontSize: "clamp(11px, 2vw, 13px)",
               color: "rgba(255,255,255,0.7)",
               marginTop: "6px",
             }}
@@ -172,16 +172,16 @@ export function SplashScreen() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 1.0 }}
-        className="w-full pb-4"
+        className="w-full pb-4 px-2"
       >
         <motion.button
           whileTap={{ scale: 0.96 }}
           whileHover={{ scale: 1.02 }}
           onClick={handleStart}
-          className="w-full py-5 flex items-center justify-center gap-3"
+          className="w-full py-4 sm:py-5 flex items-center justify-center gap-2 sm:gap-3"
           style={{
             background: "rgba(255,255,255,0.95)",
-            borderRadius: "22px",
+            borderRadius: "clamp(16px, 3vw, 24px)",
             boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
             border: "none",
             cursor: "pointer",
@@ -191,21 +191,21 @@ export function SplashScreen() {
             style={{
               fontFamily: "Nunito, sans-serif",
               fontWeight: 800,
-              fontSize: "18px",
+              fontSize: "clamp(14px, 4vw, 20px)",
               color: "#3A6FBF",
               letterSpacing: "0.5px",
             }}
           >
             Comenzar
           </span>
-          <span style={{ fontSize: "20px" }}>✨</span>
+          <span style={{ fontSize: "clamp(16px, 4vw, 24px)" }}>✨</span>
         </motion.button>
 
         <p
-          className="text-center mt-4"
+          className="text-center mt-3 sm:mt-4"
           style={{
             fontFamily: "Nunito, sans-serif",
-            fontSize: "12px",
+            fontSize: "clamp(10px, 2vw, 13px)",
             color: "rgba(255,255,255,0.55)",
           }}
         >

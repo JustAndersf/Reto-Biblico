@@ -63,21 +63,21 @@ export function LevelScreen() {
     <div className="flex flex-col min-h-full" style={{ background: "#EEF4FB" }}>
       {/* Header */}
       <div
-        className="px-5 pt-4 pb-8"
+        className="px-4 sm:px-6 pt-4 pb-6 sm:pb-8"
         style={{
           background: `linear-gradient(165deg, ${category.colorFrom}, ${category.colorTo})`,
-          borderBottomLeftRadius: "28px",
-          borderBottomRightRadius: "28px",
+          borderBottomLeftRadius: "clamp(20px, 4vw, 32px)",
+          borderBottomRightRadius: "clamp(20px, 4vw, 32px)",
         }}
       >
-        <div className="flex items-center gap-3 mb-5">
+        <div className="flex items-center gap-3 mb-4 sm:mb-5">
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate("/categories")}
-            className="flex items-center justify-center"
+            className="flex items-center justify-center flex-shrink-0"
             style={{
-              width: "40px",
-              height: "40px",
+              width: "clamp(36px, 8vw, 44px)",
+              height: "clamp(36px, 8vw, 44px)",
               borderRadius: "13px",
               background: "rgba(255,255,255,0.25)",
               border: "none",

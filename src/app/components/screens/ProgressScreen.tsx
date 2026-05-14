@@ -42,36 +42,34 @@ export function ProgressScreen() {
     <div className="flex flex-col min-h-full" style={{ background: "#EEF4FB" }}>
       {/* Header */}
       <div
-        className="px-5 pt-4 pb-7"
+        className="px-4 sm:px-6 pt-4 pb-5 sm:pb-7"
         style={{
           background: "linear-gradient(165deg, #3A6FBF 0%, #4A7FD4 60%, #5B9FE8 100%)",
-          borderBottomLeftRadius: "28px",
-          borderBottomRightRadius: "28px",
+          borderBottomLeftRadius: "clamp(20px, 4vw, 32px)",
+          borderBottomRightRadius: "clamp(20px, 4vw, 32px)",
         }}
       >
-        <div className="flex items-center gap-3 mb-5">
+        <div className="flex items-center gap-3 mb-4 sm:mb-5">
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate("/home")}
+            className="flex items-center justify-center flex-shrink-0"
             style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "13px",
+              width: "clamp(36px, 8vw, 44px)",
+              height: "clamp(36px, 8vw, 44px)",
+              borderRadius: "clamp(10px, 2vw, 16px)",
               background: "rgba(255,255,255,0.22)",
               border: "none",
               cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
             }}
           >
             <ArrowLeft size={18} color="white" strokeWidth={2.5} />
           </motion.button>
-          <div>
-            <p style={{ fontFamily: "Nunito, sans-serif", fontSize: "13px", color: "rgba(255,255,255,0.75)" }}>
+          <div className="flex-1 min-w-0">
+            <p style={{ fontFamily: "Nunito, sans-serif", fontSize: "clamp(11px, 2.5vw, 14px)", color: "rgba(255,255,255,0.75)" }}>
               Historial de juego
             </p>
-            <h1 style={{ fontFamily: "Lora, serif", fontWeight: 700, fontSize: "22px", color: "#FFFFFF" }}>
+            <h1 style={{ fontFamily: "Lora, serif", fontWeight: 700, fontSize: "clamp(18px, 5vw, 28px)", color: "#FFFFFF", lineHeight: 1.1 }}>
               Mi Progreso
             </h1>
           </div>

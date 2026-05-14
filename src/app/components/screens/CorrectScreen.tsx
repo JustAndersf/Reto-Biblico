@@ -61,7 +61,7 @@ export function CorrectScreen() {
 
   return (
     <div
-      className="flex flex-col items-center justify-between min-h-full px-6 py-8"
+      className="flex flex-col items-center justify-between min-h-full px-4 sm:px-6 py-6 sm:py-8"
       style={{ background: "var(--game-bg)" }}
     >
       {/* Top — vidas */}
@@ -70,7 +70,7 @@ export function CorrectScreen() {
       </div>
 
       {/* Centro */}
-      <div className="flex flex-col items-center gap-6 flex-1 justify-center w-full">
+      <div className="flex flex-col items-center gap-4 sm:gap-6 flex-1 justify-center w-full">
         {/* Icono de éxito con animación spring */}
         <motion.div
           initial={{ scale: 0, rotate: -10 }}

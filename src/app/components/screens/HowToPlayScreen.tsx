@@ -53,24 +53,24 @@ export function HowToPlayScreen() {
   return (
     <div className="flex flex-col min-h-full" style={{ background: "var(--game-bg)" }}>
       {/* Header */}
-      <div className="flex items-center gap-4 px-5 pt-4 pb-5">
+      <div className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 pt-4 pb-5">
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => navigate(-1)}
           id="btn-back"
-          className="flex items-center justify-center"
-          style={{ width: "40px", height: "40px", borderRadius: "var(--game-radius-md)", background: "var(--game-card)", boxShadow: "0 2px 8px var(--game-card-shadow)", border: "none", cursor: "pointer" }}
+          className="flex items-center justify-center flex-shrink-0"
+          style={{ width: "clamp(36px, 8vw, 44px)", height: "clamp(36px, 8vw, 44px)", borderRadius: "var(--game-radius-md)", background: "var(--game-card)", boxShadow: "0 2px 8px var(--game-card-shadow)", border: "none", cursor: "pointer" }}
         >
           <ArrowLeft size={18} color="var(--game-blue)" strokeWidth={2.5} />
         </motion.button>
-        <div>
-          <h1 style={{ fontFamily: "var(--game-font-serif)", fontWeight: 700, fontSize: "22px", color: "var(--game-text-dark)" }}>¿Cómo se juega?</h1>
-          <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "13px", color: "var(--game-text-soft)" }}>Reglas y mecánica del juego</p>
+        <div className="flex-1 min-w-0">
+          <h1 style={{ fontFamily: "var(--game-font-serif)", fontWeight: 700, fontSize: "clamp(18px, 5vw, 28px)", color: "var(--game-text-dark)", lineHeight: 1.1 }}>¿Cómo se juega?</h1>
+          <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "clamp(11px, 2.5vw, 14px)", color: "var(--game-text-soft)" }}>Reglas y mecánica del juego</p>
         </div>
       </div>
 
       {/* Contenido */}
-      <div className="flex-1 px-5 flex flex-col gap-4 pb-8">
+      <div className="flex-1 px-4 sm:px-6 flex flex-col gap-3 sm:gap-4 pb-8">
         {rules.map((rule, i) => (
           <motion.div
             key={i}

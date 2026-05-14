@@ -319,15 +319,15 @@ export function SettingsScreen() {
         )}
       </AnimatePresence>
 
-      <div className="flex items-center gap-4 px-5 pt-4 pb-5">
+      <div className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 pt-4 pb-5">
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={() => navigate("/home")}
           id="btn-back"
-          className="flex items-center justify-center"
+          className="flex items-center justify-center flex-shrink-0"
           style={{
-            width: "40px",
-            height: "40px",
+            width: "clamp(36px, 8vw, 44px)",
+            height: "clamp(36px, 8vw, 44px)",
             borderRadius: "var(--game-radius-md)",
             background: "var(--game-card)",
             boxShadow: "0 2px 8px var(--game-card-shadow)",
@@ -337,44 +337,45 @@ export function SettingsScreen() {
         >
           <ArrowLeft size={18} color="var(--game-blue)" strokeWidth={2.5} />
         </motion.button>
-        <div>
+        <div className="flex-1 min-w-0">
           <h1
             style={{
               fontFamily: "var(--game-font-serif)",
               fontWeight: 700,
-              fontSize: "22px",
+              fontSize: "clamp(18px, 5vw, 28px)",
               color: "var(--game-text-dark)",
+              lineHeight: 1.1,
             }}
           >
             Configuración
           </h1>
-          <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "13px", color: "var(--game-text-soft)" }}>
+          <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "clamp(11px, 2.5vw, 14px)", color: "var(--game-text-soft)" }}>
             Personaliza tu experiencia
           </p>
         </div>
       </div>
 
-      <div className="px-5 mb-5">
+      <div className="px-4 sm:px-6 mb-4 sm:mb-5">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-4 p-4"
+          className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4"
           style={{
             background: "linear-gradient(135deg, #4A7FD4, #3A6FBF)",
-            borderRadius: "var(--game-radius-xl)",
+            borderRadius: "clamp(16px, 3vw, 20px)",
             boxShadow: "0 6px 20px rgba(74,127,212,0.3)",
           }}
         >
           <div
-            className="flex items-center justify-center"
+            className="flex items-center justify-center flex-shrink-0"
             style={{
-              width: "54px",
-              height: "54px",
-              borderRadius: "18px",
+              width: "clamp(44px, 10vw, 60px)",
+              height: "clamp(44px, 10vw, 60px)",
+              borderRadius: "clamp(12px, 2vw, 20px)",
               background: "rgba(255,255,255,0.25)",
             }}
           >
-            <span style={{ fontSize: "26px" }}>📖</span>
+            <span style={{ fontSize: "clamp(20px, 5vw, 32px)" }}>📖</span>
           </div>
           <div className="flex-1">
             <p style={{ fontFamily: "var(--game-font-sans)", fontWeight: 800, fontSize: "16px", color: "#FFFFFF" }}>

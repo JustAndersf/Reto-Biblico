@@ -220,27 +220,27 @@ export function GameScreen() {
     <div className="flex flex-col min-h-full" style={{ background: "#EEF4FB" }}>
       {/* Top Bar */}
       <div
-        className="px-5 pt-3 pb-4"
+        className="px-4 sm:px-6 pt-2 sm:pt-3 pb-3 sm:pb-4"
         style={{
           background: `linear-gradient(165deg, ${category.colorFrom}, ${category.colorTo})`,
-          borderBottomLeftRadius: "24px",
-          borderBottomRightRadius: "24px",
+          borderBottomLeftRadius: "clamp(18px, 3vw, 28px)",
+          borderBottomRightRadius: "clamp(18px, 3vw, 28px)",
         }}
       >
         {/* Top row */}
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-2 sm:mb-3">
           <button
             onClick={() => navigate(`/levels/${category.id}`)}
-            style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: "10px", padding: "6px", cursor: "pointer" }}
+            style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: "clamp(8px, 1.5vw, 12px)", padding: "clamp(4px, 1vw, 8px)", cursor: "pointer" }}
           >
             <X size={16} color="white" />
           </button>
 
-          <div className="flex flex-col items-center">
-            <p style={{ fontFamily: "Nunito, sans-serif", fontSize: "11px", color: "rgba(255,255,255,0.75)" }}>
+          <div className="flex flex-col items-center flex-1 min-w-0 mx-2">
+            <p style={{ fontFamily: "Nunito, sans-serif", fontSize: "clamp(10px, 2vw, 12px)", color: "rgba(255,255,255,0.75)" }}>
               {category.emoji} {category.name}
             </p>
-            <p style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: "13px", color: "white" }}>
+            <p style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: "clamp(11px, 2.5vw, 14px)", color: "white", lineHeight: 1.1 }}>
               Nivel {level.id} — {level.title}
             </p>
           </div>
@@ -281,7 +281,7 @@ export function GameScreen() {
       </div>
 
       {/* Question Area */}
-      <div className="flex-1 px-5 py-5 flex flex-col gap-5">
+      <div className="flex-1 px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-3 sm:gap-5">
         {/* Question Card */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -290,31 +290,31 @@ export function GameScreen() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.35 }}
-            className="p-5"
+            className="p-4 sm:p-5"
             style={{
               background: "#FFFFFF",
-              borderRadius: "22px",
+              borderRadius: "clamp(16px, 3vw, 24px)",
               boxShadow: "0 4px 18px rgba(74,127,212,0.1)",
               border: "1px solid rgba(74,127,212,0.08)",
               minHeight: "120px",
             }}
           >
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-2 sm:gap-3">
               <div
                 className="flex items-center justify-center flex-shrink-0 mt-0.5"
                 style={{
-                  width: "32px",
-                  height: "32px",
-                  borderRadius: "10px",
+                  width: "clamp(28px, 6vw, 36px)",
+                  height: "clamp(28px, 6vw, 36px)",
+                  borderRadius: "clamp(8px, 1.5vw, 12px)",
                   background: `${category.colorFrom}20`,
                 }}
               >
-                <span style={{ fontSize: "16px" }}>🙏</span>
+                <span style={{ fontSize: "clamp(14px, 3vw, 18px)" }}>🙏</span>
               </div>
               <p
                 style={{
                   fontFamily: "Lora, serif",
-                  fontSize: "16px",
+                  fontSize: "clamp(14px, 3vw, 18px)",
                   color: "#1E3A5F",
                   lineHeight: 1.6,
                   flex: 1,

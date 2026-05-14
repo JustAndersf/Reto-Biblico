@@ -246,7 +246,7 @@ export function HomeScreen() {
       </AnimatePresence>
 
       <div
-        className="px-5 pt-5 pb-6"
+        className="px-4 sm:px-6 pt-4 sm:pt-5 pb-5 sm:pb-6"
         style={{
           background:
             "radial-gradient(120% 80% at 0% 0%, #FFE6C7 0%, rgba(255,230,199,0.0) 40%), radial-gradient(100% 80% at 90% 0%, #D7ECFF 0%, rgba(215,236,255,0) 45%), linear-gradient(165deg, #1F3B64 0%, #2F5BA0 55%, #3C7AD9 100%)",
@@ -254,12 +254,12 @@ export function HomeScreen() {
           borderBottomRightRadius: "var(--game-radius-2xl)",
         }}
       >
-        <div className="flex items-center justify-between">
-          <div>
-            <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "12px", color: "rgba(255,255,255,0.7)", letterSpacing: "0.4px" }}>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <p style={{ fontFamily: "var(--game-font-sans)", fontSize: "clamp(10px, 2vw, 13px)", color: "rgba(255,255,255,0.7)", letterSpacing: "0.4px" }}>
               Reto Bíblico
             </p>
-            <h1 style={{ fontFamily: "var(--game-font-serif)", fontWeight: 800, fontSize: "26px", color: "#FFFFFF" }}>
+            <h1 style={{ fontFamily: "var(--game-font-serif)", fontWeight: 800, fontSize: "clamp(20px, 5vw, 32px)", color: "#FFFFFF", lineHeight: 1.1 }}>
               Explora, juega y gana
             </h1>
           </div>
@@ -267,11 +267,11 @@ export function HomeScreen() {
             whileTap={{ scale: 0.92 }}
             onClick={() => navigate("/settings")}
             id="btn-settings"
-            className="flex items-center justify-center"
+            className="flex items-center justify-center flex-shrink-0"
             style={{
-              width: "44px",
-              height: "44px",
-              borderRadius: "14px",
+              width: "clamp(40px, 8vw, 48px)",
+              height: "clamp(40px, 8vw, 48px)",
+              borderRadius: "clamp(10px, 2vw, 16px)",
               background: "rgba(255,255,255,0.16)",
               border: "1px solid rgba(255,255,255,0.25)",
             }}

@@ -48,36 +48,38 @@ export function LoginScreen() {
         </motion.div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.35 }}
-          className="w-full max-w-md p-7"
+          className="w-full max-w-md p-6 sm:p-8"
           style={{
             background: "rgba(255,255,255,0.92)",
-            borderRadius: "28px",
+            borderRadius: "clamp(20px, 4vw, 32px)",
             boxShadow: "0 22px 60px rgba(30,58,95,0.14)",
             border: "1px solid rgba(74,127,212,0.1)",
             backdropFilter: "blur(12px)",
           }}
         >
           <div
-            className="mb-5 flex h-20 w-20 items-center justify-center"
+            className="mb-4 sm:mb-5 flex items-center justify-center flex-shrink-0"
             style={{
-              borderRadius: "24px",
+              width: "clamp(60px, 12vw, 80px)",
+              height: "clamp(60px, 12vw, 80px)",
+              borderRadius: "clamp(16px, 3vw, 28px)",
               background: "linear-gradient(135deg, #4A7FD4, #3A6FBF)",
               boxShadow: "0 12px 30px rgba(74,127,212,0.25)",
             }}
           >
-            <span style={{ fontSize: "40px" }}>📖</span>
+            <span style={{ fontSize: "clamp(28px, 6vw, 48px)" }}>📖</span>
           </div>
 
           <h1
             style={{
               fontFamily: "var(--game-font-serif)",
               fontWeight: 800,
-              fontSize: "32px",
+              fontSize: "clamp(22px, 5vw, 36px)",
               lineHeight: 1.1,
               color: "#1E3A5F",
             }}
@@ -88,7 +90,7 @@ export function LoginScreen() {
             className="mt-3"
             style={{
               fontFamily: "var(--game-font-sans)",
-              fontSize: "15px",
+              fontSize: "clamp(13px, 3vw, 16px)",
               lineHeight: 1.65,
               color: "#6B7E95",
             }}
@@ -98,7 +100,7 @@ export function LoginScreen() {
           </p>
 
           <div
-            className="mt-6 flex items-start gap-3 rounded-2xl p-4"
+            className="mt-5 sm:mt-6 flex items-start gap-3 rounded-xl sm:rounded-2xl p-3 sm:p-4"
             style={{
               background: "#F7FAFE",
               border: "1px solid rgba(74,127,212,0.08)",
@@ -108,7 +110,7 @@ export function LoginScreen() {
             <p
               style={{
                 fontFamily: "var(--game-font-sans)",
-                fontSize: "13px",
+                fontSize: "clamp(12px, 2.5vw, 14px)",
                 lineHeight: 1.6,
                 color: "#4F647C",
               }}
@@ -117,14 +119,14 @@ export function LoginScreen() {
             </p>
           </div>
 
-          <GoogleLoginButton className="mt-6 w-full rounded-2xl px-6 py-4" />
+          <GoogleLoginButton className="mt-5 sm:mt-6 w-full rounded-xl sm:rounded-2xl px-6 py-3 sm:py-4" />
 
           {!hasSupabaseEnv && (
             <p
               className="mt-4 text-center"
               style={{
                 fontFamily: "var(--game-font-sans)",
-                fontSize: "12px",
+                fontSize: "clamp(10px, 2vw, 13px)",
                 color: "#C45030",
                 lineHeight: 1.6,
               }}

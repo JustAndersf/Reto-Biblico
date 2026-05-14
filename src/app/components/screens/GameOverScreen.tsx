@@ -37,15 +37,15 @@ export function GameOverScreen() {
 
   return (
     <div
-      className="flex flex-col items-center justify-between min-h-full px-6 py-10"
+      className="flex flex-col items-center justify-between min-h-full px-4 sm:px-6 py-8 sm:py-10"
       style={{ background: "#EEF4FB" }}
     >
       {/* Top decoration */}
       <div className="w-full flex justify-center">
         <div
           style={{
-            width: "50px",
-            height: "5px",
+            width: "clamp(40px, 10vw, 60px)",
+            height: "clamp(4px, 1vw, 6px)",
             background: "#CBD5E0",
             borderRadius: "3px",
           }}
@@ -53,7 +53,7 @@ export function GameOverScreen() {
       </div>
 
       {/* Center content */}
-      <div className="flex flex-col items-center gap-6 flex-1 justify-center">
+      <div className="flex flex-col items-center gap-4 sm:gap-6 flex-1 justify-center">
         {/* Main icon */}
         <motion.div
           initial={{ scale: 0, y: -30 }}
@@ -63,14 +63,14 @@ export function GameOverScreen() {
           <div
             className="flex items-center justify-center"
             style={{
-              width: "120px",
-              height: "120px",
-              borderRadius: "36px",
+              width: "clamp(80px, 20vw, 140px)",
+              height: "clamp(80px, 20vw, 140px)",
+              borderRadius: "clamp(24px, 4vw, 40px)",
               background: "linear-gradient(135deg, #E89060, #D05030)",
               boxShadow: "0 14px 40px rgba(208,80,48,0.35)",
             }}
           >
-            <span style={{ fontSize: "58px" }}>💔</span>
+            <span style={{ fontSize: "clamp(40px, 10vw, 68px)" }}>💔</span>
           </div>
         </motion.div>
 

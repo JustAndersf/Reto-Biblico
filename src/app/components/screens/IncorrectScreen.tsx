@@ -87,7 +87,7 @@ export function IncorrectScreen() {
 
   return (
     <div
-      className="flex flex-col items-center justify-between min-h-full px-6 py-8"
+      className="flex flex-col items-center justify-between min-h-full px-4 sm:px-6 py-6 sm:py-8"
       style={{ background: "#EEF4FB" }}
     >
       {/* Top: Lives */}
@@ -96,7 +96,7 @@ export function IncorrectScreen() {
           style={{
             fontFamily: "Nunito, sans-serif",
             fontWeight: 700,
-            fontSize: "14px",
+            fontSize: "clamp(12px, 2.5vw, 15px)",
             color: "#E85474",
           }}
         >
@@ -106,7 +106,7 @@ export function IncorrectScreen() {
       </div>
 
       {/* Center Content */}
-      <div className="flex flex-col items-center gap-6 flex-1 justify-center">
+      <div className="flex flex-col items-center gap-4 sm:gap-6 flex-1 justify-center">
         {/* Icon */}
         <motion.div
           initial={{ scale: 0, rotate: 10 }}
